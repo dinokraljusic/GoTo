@@ -5,9 +5,15 @@ import android.net.Uri;
 import java.util.Date;
 import android.location.Location;
 import android.net.Uri;
+
+import com.orm.SugarRecord;
+
 import java.util.Date;
 
-public class Paket {
+public class Paket extends SugarRecord {
+    Paket(){
+
+    }
     int ID; //unique id
     int SenderID;
     Uri Photo;

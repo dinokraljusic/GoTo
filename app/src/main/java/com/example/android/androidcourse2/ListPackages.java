@@ -12,7 +12,7 @@ public class ListPackages extends AppCompatActivity {
         setContentView(R.layout.activity_list_packages);
 
         ListView lv = (ListView)findViewById(R.id.paketiListView);
-        lv.setAdapter(new PaketAdapter(this,MockData.createListOfPackages()));
+        lv.setAdapter(new PaketAdapter(this,Paket.listAll(Paket.class)));
     }
 }
 

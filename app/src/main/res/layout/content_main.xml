@@ -62,21 +62,16 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="City"
-            android:id="@+id/city"
+            android:hint="Phone"
+            android:id="@+id/phone"
             android:layout_weight="1"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="State"
-            android:id="@+id/state"
+            android:hint="Email"
+            android:id="@+id/email"
             android:layout_weight="1"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ZIP"
-            android:id="@+id/zip"
-            android:layout_weight="1"/>
+
 
     </LinearLayout>
 
@@ -93,5 +88,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:onClick="Save"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/takephoto"
+        android:layout_height="wrap_content"
+        android:text="Take Photo"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:onClick="TakePhoto"/>
 
 </LinearLayout>
