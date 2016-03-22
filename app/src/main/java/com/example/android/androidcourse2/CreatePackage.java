@@ -32,35 +32,41 @@ public class CreatePackage extends AppCompatActivity {
         String[] slist = {"Food", "Water", "Medical", "Tools", "Shelter", "Clothing", "Baby", "FirstAid" };
         sp.setAdapter(new ArrayAdapter<String>(CreatePackage.this, android.R.layout.simple_list_item_1, slist));
 
+
     }
 
     public Uri imageUri = null;
+    public Uri slika = null;
     public int TAKE_PHOTO_CODE = 100;
     String FILENAME = "package_picture";
     File dir = Environment.getExternalStorageDirectory();
     String path;
+    public boolean captured = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        String file = dir + "/" + FILENAME;
+        //String file = dir + "/" + FILENAME;
         path = dir.toString() + "/" +FILENAME;
 
         if(requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK){
             //makeText(this, "Camera demo: Photo saved to folder " + dir, LENGTH_LONG).show();
 
-            ImageView iv = (ImageView)findViewById(R.id.slika);
+      //      ImageView iv = (ImageView)findViewById(R.id.slika);
             //iv.setImageBitmap(dir+FILENAME);
             //String path = dir.toString() + "\\" +FILENAME;
 
-            iv.setImageURI(Uri.parse("file///" + path));
+     //       iv.setImageURI(Uri.parse("file://" + path));
+            //iv.setImageURI(slika);
 
-            imageUri = Uri.parse(path);
+            //imageUri = Uri.parse(path);
+            captured = true;
         }
-        imageUri = Uri.parse(path);
+   //     imageUri = Uri.parse(path);
     }
+
 
     public void takePhoto(View view){
         //File dir = Environment.getExternalStorageDirectory();
@@ -79,15 +85,26 @@ public class CreatePackage extends AppCompatActivity {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
+        //slika = outputFileUri;
+        captured = false;
         startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
 
-        //ImageView iv = (ImageView)findViewById(R.id.slika);
-        //iv.setImageBitmap(dir+FILENAME);
+       // ImageView iv = (ImageView)findViewById(R.id.slika);
+       // iv.setImageBitmap(dir+FILENAME);
         //String path = dir.toString() + "\\" +FILENAME;
-        //iv.setImageURI(Uri.parse(path));
+       // iv.setImageURI(outputFileUri);
 
         //imageUri = Uri.parse(path);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("ACTION EVENTS", "onResume");
+        if(captured){
+            ImageView iv = (ImageView)findViewById(R.id.slika);
+            iv.setImageURI(Uri.parse(dir + "/" + FILENAME));
+        }
     }
 
     public boolean savePackage(View view){

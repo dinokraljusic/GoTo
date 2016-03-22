@@ -30,13 +30,13 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:text="create Package"
-        android:onClick="startNewActivity(new Intent(this, createPackage))"
+        android:onClick="createPackage"
         android:layout_height="0dp" />
     <Button
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:text="list Package"
-        android:onClick="startNewActivity(new Intent(this, listPackage))"
+        android:onClick="listPackage"
         android:layout_height="0dp" />
     <Button
         android:layout_width="match_parent"
