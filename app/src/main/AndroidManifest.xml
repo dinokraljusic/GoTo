@@ -9,16 +9,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".PersonalInfoActivity" />
+        <activity android:name=".CreatePackage" />
+        <activity android:name=".ListPackages">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalInfoActivity" />
-        <activity android:name=".CreatePackage" />
-        <activity android:name=".ListPackages" />
-        <activity android:name=".ItemPackageDetail" />
         <activity android:name=".Map" />
         <activity android:name=".DeliveryActivity" />
         <activity android:name=".CreateSender" />
