@@ -39,12 +39,10 @@ public class CreatePackage extends AppCompatActivity {
     }
 
     public Uri imageUri = null;
-    public Uri slika = null;
     public int TAKE_PHOTO_CODE = 100;
     String FILENAME = "package_picture";
     File dir = Environment.getExternalStorageDirectory();
     String path;
-    public boolean captured = false;
     File newfile;
 
     @Override
@@ -58,6 +56,13 @@ public class CreatePackage extends AppCompatActivity {
             ImageView iv = (ImageView)findViewById(R.id.slika);
             iv.setImageURI(Uri.parse(path));
             imageUri = Uri.parse(path);
+
+            //Bitmap bmp = BitmapFactory.decodeFile(path);
+            //iv.setImageBitmap(bmp);
+
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //iv.setImageBitmap(imageBitmap);
             //Toast.makeText(this,"captured", Toast.LENGTH_SHORT).show();
         }
     }
@@ -79,7 +84,6 @@ public class CreatePackage extends AppCompatActivity {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        //captured = false;
         startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
     }
 
