@@ -59,9 +59,8 @@ public class PaketAdapter extends BaseAdapter {
             ImageView Perishable = (ImageView) convertView.findViewById(R.id.perishable);
 
 
-            id.setText(String.valueOf(p.ID));
-            String str = String.format("%tF", p.pickupDate);
-            pickupDate.setText(str);
+            id.setText(String.valueOf(p.getId()));
+            pickupDate.setText(String.format("%tF", p.pickupDate));
             destination.setText(p.Destination);
 
             if (!p.Fragile) Fragile.setVisibility(View.INVISIBLE);
