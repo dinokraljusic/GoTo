@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_opacity_black_24dp"
-        android:id="@+id/fragile"/>
+        android:id="@+id/liquid"/>
 
     <ImageView
         android:layout_weight="0.5"
@@ -53,6 +53,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_track_changes_black_24dp"
-        android:id="@+id/hazardous"/>
+        android:id="@+id/fragile"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ public class PaketAdapter extends BaseAdapter {
             TextView pickupDate = (TextView) convertView.findViewById(R.id.pickupDate);
             TextView destination = (TextView) convertView.findViewById(R.id.destination);
             ImageView Fragile = (ImageView) convertView.findViewById(R.id.fragile);
-            ImageView Hazardous = (ImageView) convertView.findViewById(R.id.hazardous);
+            ImageView Liquid = (ImageView) convertView.findViewById(R.id.liquid);
             ImageView Heavy = (ImageView) convertView.findViewById(R.id.heavy);
             ImageView Perishable = (ImageView) convertView.findViewById(R.id.perishable);
 
@@ -64,7 +65,7 @@ public class PaketAdapter extends BaseAdapter {
             destination.setText(p.Destination);
 
             if (!p.Fragile) Fragile.setVisibility(View.INVISIBLE);
-            if (!p.Hazardous) Hazardous.setVisibility(View.INVISIBLE);
+            if (!p.Liquid) Liquid.setVisibility(View.INVISIBLE);
             if (!p.Heavy) Heavy.setVisibility(View.INVISIBLE);
             if (!p.Perishable) Perishable.setVisibility(View.INVISIBLE);
 

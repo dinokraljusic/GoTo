@@ -11,9 +11,9 @@ import com.orm.SugarRecord;
 import java.util.Date;
 
 public class Paket extends SugarRecord {
-    Paket(){
+    /*Paket(){
 
-    }
+    }*/
     int ID; //unique id
     int SenderID;
     Uri Photo;

@@ -11,7 +11,7 @@ public class ListPackages extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_packages);
 
-        ListView lv = (ListView)findViewById(R.id.paketiListView);
+        ListView lv = (ListView)findViewById(R.id.paketilist);
         lv.setAdapter(new PaketAdapter(this,Paket.listAll(Paket.class)));
     }
 }

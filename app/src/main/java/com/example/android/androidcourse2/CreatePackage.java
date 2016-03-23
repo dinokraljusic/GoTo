@@ -1,6 +1,8 @@
 package com.example.android.androidcourse2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,38 +45,29 @@ public class CreatePackage extends AppCompatActivity {
     File dir = Environment.getExternalStorageDirectory();
     String path;
     public boolean captured = false;
+    File newfile;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        //String file = dir + "/" + FILENAME;
         path = dir.toString() + "/" +FILENAME;
 
         if(requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK){
-            //makeText(this, "Camera demo: Photo saved to folder " + dir, LENGTH_LONG).show();
 
-      //      ImageView iv = (ImageView)findViewById(R.id.slika);
-            //iv.setImageBitmap(dir+FILENAME);
-            //String path = dir.toString() + "\\" +FILENAME;
-
-     //       iv.setImageURI(Uri.parse("file://" + path));
-            //iv.setImageURI(slika);
-
-            //imageUri = Uri.parse(path);
-            captured = true;
+            ImageView iv = (ImageView)findViewById(R.id.slika);
+            iv.setImageURI(Uri.parse(path));
+            imageUri = Uri.parse(path);
+            //Toast.makeText(this,"captured", Toast.LENGTH_SHORT).show();
         }
-   //     imageUri = Uri.parse(path);
     }
 
 
     public void takePhoto(View view){
-        //File dir = Environment.getExternalStorageDirectory();
 
         String file = dir + "/" + FILENAME;
 
-        File newfile = new File(file);
+        newfile = new File(file);
         try{
             newfile.createNewFile();
         }
@@ -85,26 +79,20 @@ public class CreatePackage extends AppCompatActivity {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        //slika = outputFileUri;
-        captured = false;
+        //captured = false;
         startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-
-       // ImageView iv = (ImageView)findViewById(R.id.slika);
-       // iv.setImageBitmap(dir+FILENAME);
-        //String path = dir.toString() + "\\" +FILENAME;
-       // iv.setImageURI(outputFileUri);
-
-        //imageUri = Uri.parse(path);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("ACTION EVENTS", "onResume");
+        /*Log.i("ACTION EVENTS", "onResume");
         if(captured){
             ImageView iv = (ImageView)findViewById(R.id.slika);
-            iv.setImageURI(Uri.parse(dir + "/" + FILENAME));
-        }
+            Bitmap bImage = BitmapFactory.decodeFile(path);
+            iv.setImageBitmap(bImage);
+            //iv.setImageURI(Uri.parse(dir.toString() + "/" + FILENAME));
+        }*/
     }
 
     public boolean savePackage(View view){
