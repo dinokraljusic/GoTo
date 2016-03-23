@@ -125,6 +125,7 @@ public class CreatePackage extends AppCompatActivity {
         catch(Exception e){
             return false;
         }
+        Toast.makeText(this, "Package created.", Toast.LENGTH_SHORT).show();
         return true;
     }
 }

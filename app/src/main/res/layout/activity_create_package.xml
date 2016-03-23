@@ -15,7 +15,7 @@
         android:layout_weight="30"
         android:id="@+id/slika"
         android:src="@color/colorPrimaryDark"
-        android:layout_height="50dp" />
+        android:layout_height="0dp" />
     <Button
         android:layout_width="match_parent"
         android:layout_weight="10"
@@ -33,28 +33,19 @@
         android:layout_weight="10"
         android:orientation="horizontal"
         android:layout_height="0dp">
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="4"
-        android:text="Fragile"
-        android:layout_height="match_parent" />
-
         <CheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/fragile"
+            android:text="Fragile"
             android:layout_height="match_parent" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:text="Heavy"
-            android:layout_height="match_parent" />
 
         <CheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/heavy"
+            android:text="Heavy"
             android:layout_height="match_parent" />
 
     </LinearLayout>
@@ -65,28 +56,19 @@
         android:layout_weight="10"
         android:orientation="horizontal"
         android:layout_height="0dp">
-        <TextView
+
+        <CheckBox
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="1"
+            android:id="@+id/perishable"
             android:text="Perishable"
             android:layout_height="match_parent" />
 
         <CheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:id="@+id/perishable"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:text="Liquid"
-            android:layout_height="match_parent" />
-
-        <CheckBox
-            android:layout_width="0dp"
-            android:layout_weight="1"
             android:id="@+id/liquid"
+            android:text="Liquid"
             android:layout_height="match_parent" />
 
     </LinearLayout>
