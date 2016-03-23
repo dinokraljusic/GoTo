@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.androidcourse2.CreatePackage;
 import com.example.android.androidcourse2.ListPackages;
@@ -49,4 +50,8 @@ public class Start extends AppCompatActivity {
         startActivity(new Intent(this, ListPackages.class));
     }
 
-}
+    public void deliver(View v) {
+        Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+    }
+
+    }
