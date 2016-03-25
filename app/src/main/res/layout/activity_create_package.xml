@@ -21,6 +21,7 @@
         android:layout_weight="10"
         android:text="Take Photo"
         android:onClick="takePhoto"
+        android:id="@+id/takePhoto"
         android:layout_height="0dp" />
     <Spinner
         android:layout_width="match_parent"
@@ -78,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_weight="15"
         android:id="@+id/destination"
+        android:hint="Package Destination"
         android:layout_height="0dp" />
 
     <Button
@@ -85,6 +87,7 @@
         android:layout_weight="10"
         android:text="Save"
         android:onClick="savePackage"
+        android:id="@+id/savePackage"
         android:layout_height="0dp" />
 
 </LinearLayout>

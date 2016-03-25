@@ -16,7 +16,7 @@ public class Paket extends SugarRecord {
     }*/
     int ID; //unique id
     int SenderID;
-    Uri Photo;
+    String Photo;
     Location PickupLocation; //longitude latitude
     Location DeliveryLocation;
     Date pickupDate;
