@@ -35,7 +35,7 @@ public class CreatePackage extends AppCompatActivity {
         Spinner sp = (Spinner)findViewById(R.id.type);
         String[] slist = {"Food", "Water", "Medical", "Tools", "Shelter", "Clothing", "Baby", "FirstAid" };
         sp.setAdapter(new ArrayAdapter<String>(CreatePackage.this, android.R.layout.simple_list_item_1, slist));
-        int paketID = this.getIntent().getIntExtra("PaketID", 0);
+        long paketID = this.getIntent().getLongExtra(Constants.paketID, 0);
 
         //check if getIntent is null
         if(paketID ==0){

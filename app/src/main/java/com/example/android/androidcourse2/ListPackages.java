@@ -14,14 +14,16 @@ public class ListPackages extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_packages);
 
-        ListView lv = (ListView)findViewById(R.id.paketilist);
+        final ListView lv = (ListView)findViewById(R.id.paketilist);
         lv.setAdapter(new PaketAdapter(this,Paket.listAll(Paket.class)));
 
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(ListPackages.this, CreatePackage.class);
-                i.putExtra("PaketID", position);
+                Paket pak = (Paket)lv.getItemAtPosition(position);
+                long poz = pak.getId();
+                i.putExtra(Constants.paketID, poz);
                 startActivity(i);
                 return false;
             }
