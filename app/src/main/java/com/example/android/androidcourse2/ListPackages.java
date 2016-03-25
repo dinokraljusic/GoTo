@@ -21,7 +21,8 @@ public class ListPackages extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(ListPackages.this, CreatePackage.class);
-                i.putExtra("PaketID", position);
+               Paket p= (Paket)parent.getAdapter().getItem(position);
+                i.putExtra(Constants.paketID, p.getId());
                 startActivity(i);
                 return false;
             }
