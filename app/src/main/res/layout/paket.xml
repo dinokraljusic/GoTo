@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="9">
     <TextView
         android:layout_weight="1"
         android:layout_width="0dp"
@@ -16,40 +17,42 @@
         android:layout_width="0dp"
         android:text="18 Mart 16:05"
         android:textSize="20dp"
+        android:paddingLeft="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/pickupDate"/>
 
     <TextView
-        android:layout_weight="3"
+        android:layout_weight="3.4"
         android:layout_width="0dp"
         android:textSize="30dp"
         android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
         android:text="Anywhere"
         android:id="@+id/destination"/>
 
     <ImageView
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_opacity_black_24dp"
         android:id="@+id/liquid"/>
 
     <ImageView
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_alarm_add_black_24dp"
         android:id="@+id/perishable"/>
 
     <ImageView
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_fiber_new_black_24dp"
         android:id="@+id/heavy"/>
 
     <ImageView
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_track_changes_black_24dp"

@@ -7,14 +7,58 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.example.android.androidcourse2.PersonList">
 
-    <ListView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="40dp">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="ID"
+            android:editable="false"
+            android:clickable="false"
+            android:textSize="17dp"
+            android:layout_height="match_parent" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:text="Picked Up"
+            android:editable="false"
+            android:clickable="false"
+            android:textSize="17dp"
+            android:layout_height="match_parent" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="3.4"
+            android:text="Destination"
+            android:editable="false"
+            android:clickable="false"
+            android:textSize="17dp"
+            android:layout_height="match_parent" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:text="Status"
+            android:editable="false"
+            android:clickable="false"
+            android:textSize="17dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/paketilist"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ListView
 
-        />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/paketilist"
+
+            />
+    </LinearLayout>
+
 
 </LinearLayout>
