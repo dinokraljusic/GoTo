@@ -37,6 +37,8 @@ import java.util.List;
 
 public class CreatePackage extends AppCompatActivity {
 
+    private List<Address> addressList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +166,8 @@ public class CreatePackage extends AppCompatActivity {
     }
 
     public boolean savePackage(View view){
+        List<Address> addressList = null;
+
         try{
             Paket p = new Paket();
 
@@ -188,9 +192,10 @@ public class CreatePackage extends AppCompatActivity {
             Location l1= null;
 
             try{
-                //Geocoder gc = new Geocoder(this);
-                //List<Address> addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 3);
+                Geocoder gc = new Geocoder(this);
                 l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 3);
+
                 Location l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 Location l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -211,7 +216,10 @@ public class CreatePackage extends AppCompatActivity {
         catch(Exception e){
             return false;
         }
-        Toast.makeText(this, "Package created.", Toast.LENGTH_SHORT).show();
+        String addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
+                + addressList.get(2).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
+
+        Toast.makeText(this, "Package created on address " + addressString, Toast.LENGTH_LONG).show();
         return true;
     }
 }

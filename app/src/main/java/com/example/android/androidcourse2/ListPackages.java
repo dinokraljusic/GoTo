@@ -23,11 +23,18 @@ public class ListPackages extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(ListPackages.this, CreatePackage.class);
-                Paket pak = (Paket)lv.getItemAtPosition(position);
-                long poz = pak.getId();
-                i.putExtra(Constants.paketID, poz);
+                i.putExtra(Constants.paketID, (((Paket)lv.getItemAtPosition(position))).getId());
                 startActivity(i);
                 return false;
+            }
+        });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(ListPackages.this, CreatePackage.class);
+                i.putExtra(Constants.paketID, (((Paket)lv.getItemAtPosition(position))).getId());
+                startActivity(i);
             }
         });
     }
