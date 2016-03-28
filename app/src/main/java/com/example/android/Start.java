@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.androidcourse2.CreatePackage;
-import com.example.android.androidcourse2.Delivery;
-import com.example.android.androidcourse2.DeliveryActivity;
 import com.example.android.androidcourse2.ListPackages;
 import com.example.android.androidcourse2.MainActivity;
 import com.example.android.androidcourse2.PersonList;
@@ -53,7 +51,7 @@ public class Start extends AppCompatActivity {
     }
 
     public void deliver(View v) {
-        startActivity(new Intent(this, DeliveryActivity.class));
+        Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     }

@@ -5,10 +5,4 @@
     <string name="address">Address</string>
     <string name="title_activity_person_list">PersonList</string>
     <string name="title_activity_start">Start</string>
-    <string name="uploadPhoto">UploadPhoto</string>
-    <string name="photo">photo</string>
-    <string name="deliveryPhoto">deliveryPhoto</string>
-    <string name="photoUpload">Photo</string>
-    <string name="deliveryComment">Comment</string>
-    <string name="saveDeliver">Save</string>
 </resources>
