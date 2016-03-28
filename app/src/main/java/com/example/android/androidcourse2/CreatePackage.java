@@ -167,6 +167,7 @@ public class CreatePackage extends AppCompatActivity {
 
     public boolean savePackage(View view){
         List<Address> addressList = null;
+        String addressString="";
 
         try{
             Paket p = new Paket();
@@ -198,9 +199,15 @@ public class CreatePackage extends AppCompatActivity {
 
                 Location l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 Location l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
+                        + addressList.get(2).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
 
-            }catch(SecurityException e){
+            }
+            catch(SecurityException e){
                 e.printStackTrace();
+            }
+            catch(Exception exc){
+                exc.printStackTrace();
             }
 
             if(l1!=null){
@@ -216,10 +223,8 @@ public class CreatePackage extends AppCompatActivity {
         catch(Exception e){
             return false;
         }
-        String addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
-                + addressList.get(2).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
-
-        Toast.makeText(this, "Package created on address " + addressString, Toast.LENGTH_LONG).show();
+        String toastMessage = addressList == null ? "Package created." : "Package created on " + addressString;
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
         return true;
     }
 }
