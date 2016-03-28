@@ -38,5 +38,5 @@ public class Paket extends SugarRecord {
     enum Status {PickedUp, InTransport, Delivered, Distributed, Destroyed, Lost , Stolen }
     enum Type {Food, Water, Medical, Tools, Shelter, Clothing, Baby,FirstAid }
     Type type;
-    Status status;
+    static Status status;
 }

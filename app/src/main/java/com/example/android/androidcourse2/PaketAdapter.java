@@ -37,7 +37,7 @@ public class PaketAdapter extends BaseAdapter {
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return list.get(position).getId();
         }
 
         @Override
@@ -63,10 +63,10 @@ public class PaketAdapter extends BaseAdapter {
             pickupDate.setText(String.format("%tF", p.pickupDate));
             destination.setText(p.Destination);
 
-            if (!p.Fragile) Fragile.setVisibility(View.INVISIBLE);
-            if (!p.Liquid) Liquid.setVisibility(View.INVISIBLE);
-            if (!p.Heavy) Heavy.setVisibility(View.INVISIBLE);
-            if (!p.Perishable) Perishable.setVisibility(View.INVISIBLE);
+            if (!p.Fragile) Fragile.setVisibility(View.GONE);
+            if (!p.Liquid) Liquid.setVisibility(View.GONE);
+            if (!p.Heavy) Heavy.setVisibility(View.GONE);
+            if (!p.Perishable) Perishable.setVisibility(View.GONE);
 
 
             return convertView;

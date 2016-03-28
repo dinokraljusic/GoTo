@@ -1,13 +1,22 @@
 package com.example.android.androidcourse2;
 
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,7 +24,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -32,32 +43,52 @@ public class CreatePackage extends AppCompatActivity {
         setContentView(R.layout.activity_create_package);
 
         List<Paket> paketi = Paket.listAll(Paket.class);
-        Spinner sp = (Spinner)findViewById(R.id.type);
-        String[] slist = {"Food", "Water", "Medical", "Tools", "Shelter", "Clothing", "Baby", "FirstAid" };
+        Spinner sp = (Spinner) findViewById(R.id.typespinner);
+        String[] slist = {"Food", "Water", "Medical", "Tools", "Shelter", "Clothing", "Baby", "FirstAid"};
         sp.setAdapter(new ArrayAdapter<String>(CreatePackage.this, android.R.layout.simple_list_item_1, slist));
-        int paketID = this.getIntent().getIntExtra("PaketID", 0);
+        long paketID = this.getIntent().getLongExtra(Constants.paketID, 0);
 
         //check if getIntent is null
-        if(paketID ==0){
+        if (paketID == 0) {
+            LinearLayout spinnerlayout = (LinearLayout) findViewById(R.id.spinnerlayout);
+            spinnerlayout.setVisibility(View.VISIBLE);
+            LinearLayout textlayout = (LinearLayout) findViewById(R.id.textlayout);
+            textlayout.setVisibility(View.GONE);
 
-        }
-        else{
-            Button takePhoto = (Button)findViewById(R.id.takePhoto);
-            Button savePackage = (Button)findViewById(R.id.savePackage);
-            takePhoto.setVisibility(View.INVISIBLE);
-            savePackage.setVisibility(View.INVISIBLE);
-
+            EditText dest = (EditText) findViewById(R.id.destination);
+            dest.setText("");
+            //dest.setInputType(InputType.TYPE_CLASS_TEXT);
+            dest.setEnabled(true);
+        } else {
             Paket p = Paket.findById(Paket.class, paketID);
 
-            EditText dest = (EditText)findViewById(R.id.destination);
-            dest.setText(p.Destination);
+            Button takePhoto = (Button) findViewById(R.id.takePhoto);
+            Button savePackage = (Button) findViewById(R.id.savePackage);
+            takePhoto.setVisibility(View.GONE);
+            savePackage.setVisibility(View.GONE);
 
-            ImageView iv = (ImageView)findViewById(R.id.slika);
+            Spinner typespinner = (Spinner) findViewById(R.id.typespinner);
+            LinearLayout spinnerlayout = (LinearLayout) findViewById(R.id.spinnerlayout);
+            LinearLayout textlayout = (LinearLayout) findViewById(R.id.textlayout);
+            textlayout.setVisibility(View.VISIBLE);
+            TextView typetext = (TextView) findViewById(R.id.typetext);
+            typetext.setText(typespinner.getSelectedItem().toString());
+            spinnerlayout.setVisibility(View.GONE);
+
+            EditText dest = (EditText) findViewById(R.id.destination);
+            dest.setText(p.Destination);
+            dest.setEnabled(false);
+
+            ImageView iv = (ImageView) findViewById(R.id.slika);
             iv.setImageURI(Uri.parse(p.Photo));
-            CheckBox perishable = (CheckBox)findViewById(R.id.perishable);
-            CheckBox fragile = (CheckBox)findViewById(R.id.fragile);
-            CheckBox heavy = (CheckBox)findViewById(R.id.heavy);
-            CheckBox liquid = (CheckBox)findViewById(R.id.liquid);
+            CheckBox perishable = (CheckBox) findViewById(R.id.perishable);
+            CheckBox fragile = (CheckBox) findViewById(R.id.fragile);
+            CheckBox heavy = (CheckBox) findViewById(R.id.heavy);
+            CheckBox liquid = (CheckBox) findViewById(R.id.liquid);
+
+            Spinner type = (Spinner) findViewById(R.id.typespinner);
+            //p.type = Paket.Type.values()[type.getSelectedItemPosition()];
+
 
             fragile.setChecked(p.Fragile);
             perishable.setChecked(p.Perishable);
@@ -114,7 +145,9 @@ public class CreatePackage extends AppCompatActivity {
         Uri outputFileUri = Uri.fromFile(newfile);
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        //cameraIntent.setDisplayOrientation(90);
         startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
     }
 
@@ -150,6 +183,28 @@ public class CreatePackage extends AppCompatActivity {
             p.Perishable = perishable.isChecked();
             p.Heavy = heavy.isChecked();
             p.Liquid = liquid.isChecked();
+
+            LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+            Location l1= null;
+
+            try{
+                //Geocoder gc = new Geocoder(this);
+                //List<Address> addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 3);
+                l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                Location l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            }catch(SecurityException e){
+                e.printStackTrace();
+            }
+
+            if(l1!=null){
+                p.PickupLocation = l1;
+            }
+            p.status = Paket.status.PickedUp;
+
+            //Spinner type = (Spinner)findViewById(R.id.typespinner);
+            //p.type = Paket.Type.getSelectedItem().toString();
             p.save();
 
         }
