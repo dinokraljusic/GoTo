@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.androidcourse2.Constants;
 import com.example.android.androidcourse2.CreatePackage;
 import com.example.android.androidcourse2.Delivery;
 import com.example.android.androidcourse2.DeliveryActivity;
@@ -45,7 +46,9 @@ public class Start extends AppCompatActivity {
     }
 
     public void createPackage(View v){
-        startActivity(new Intent(this, CreatePackage.class));
+        Intent i = new Intent(this, PersonList.class);
+        i.putExtra(Constants.FromCreatePackageButton,true);
+        startActivity(i);
     }
 
     public void listPackage(View v){

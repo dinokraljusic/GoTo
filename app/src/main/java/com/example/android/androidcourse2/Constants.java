@@ -6,4 +6,5 @@ package com.example.android.androidcourse2;
 public class Constants {
     public static final String paketID ="paketID";
     public static final String personID ="personID";
+    public static final String FromCreatePackageButton = "FromCreatePackageButton";
 }

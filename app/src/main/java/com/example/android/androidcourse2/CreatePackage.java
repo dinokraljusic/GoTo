@@ -34,11 +34,14 @@ public class CreatePackage extends AppCompatActivity {
     private List<Address> addressList;
     //Paket p;
     private double lon, lat;
+    Long personID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_package);
+
+        personID = getIntent().getLongExtra(Constants.personID, 0);
 
         List<Paket> paketi = Paket.listAll(Paket.class);
         Spinner sp = (Spinner) findViewById(R.id.typespinner);
@@ -203,6 +206,7 @@ public class CreatePackage extends AppCompatActivity {
             p.Perishable = perishable.isChecked();
             p.Heavy = heavy.isChecked();
             p.Liquid = liquid.isChecked();
+            p.SenderID = Integer.valueOf(1); //TODO change SenderID to Long
 
             LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
             Location l1,l2,l3;

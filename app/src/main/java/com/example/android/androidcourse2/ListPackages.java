@@ -9,6 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
 public class ListPackages extends Activity {
     //TODO http://stackoverflow.com/questions/25500353/android-actionbar-hide-show-when-scrolling-list-view
     //TODO http://developer.android.com/training/appbar/actions.html
@@ -18,8 +21,21 @@ public class ListPackages extends Activity {
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);//hides appBar. Activity must be "Activity" w/o "AppCompat"
         setContentView(R.layout.activity_list_packages);
 
+        List<Paket> listapaketa = null;
+        long personID = getIntent().getLongExtra(Constants.personID,0);
+
+        String sPersonID = String.valueOf(personID);
+        //String PersonID = Long.toString(personID);
+
+        if (personID == 0) {
+            listapaketa = Paket.listAll(Paket.class);
+        }
+        else
+        {
+            listapaketa = Paket.find(Paket.class, "SENDER_ID=? OR RECEIVER_ID=?", new String[] {sPersonID,sPersonID},null,"PICKUP_DATE",null);
+        }
         final ListView lv = (ListView)findViewById(R.id.paketilist);
-        lv.setAdapter(new PaketAdapter(this, Paket.listAll(Paket.class)));
+        lv.setAdapter(new PaketAdapter(this, listapaketa));
         final int[] pos = new int[1];
 
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

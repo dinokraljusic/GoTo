@@ -18,14 +18,30 @@ public class PersonList extends AppCompatActivity {
         setContentView(R.layout.activity_person_list);
 
         ListView listView = (ListView) findViewById(R.id.personlist);
-        listView.setAdapter(new PersonAdapter(this, Person.listAll(Person.class)));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(PersonList.this, MainActivity.class);
-                i.putExtra(Constants.personID, id);
-                startActivity(i);
-            }
-        });
+       boolean FromCreatePackageButton = getIntent().getBooleanExtra(Constants.FromCreatePackageButton,false);
+
+        if (FromCreatePackageButton){
+            listView.setAdapter(new PersonAdapter(this, Person.listAll(Person.class)));
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(PersonList.this, CreatePackage.class);
+                    i.putExtra(Constants.personID, id);
+                    startActivity(i);
+                }
+            });
+        }
+        else {
+
+            listView.setAdapter(new PersonAdapter(this, Person.listAll(Person.class)));
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(PersonList.this, MainActivity.class);
+                    i.putExtra(Constants.personID, id);
+                    startActivity(i);
+                }
+            });
+        }
     }
 }

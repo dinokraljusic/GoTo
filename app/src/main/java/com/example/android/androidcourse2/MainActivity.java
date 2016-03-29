@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -86,6 +87,38 @@ public class MainActivity extends Activity {
             }
         });
 
+        long personID = getIntent().getLongExtra( Constants.personID, 0);
+        if(personID > 0){
+            final Person p = Person.findById(Person.class, personID);
+            EditText et1 = (EditText) findViewById(R.id.name);
+            et1.setText(p.name);
+
+            EditText et2 = (EditText) findViewById(R.id.lastname);
+            et2.setText(p.lastname);
+
+            EditText et3 = (EditText)findViewById(R.id.address);
+            et3.setText(p.address);
+
+            EditText et4 = (EditText)findViewById(R.id.phone);
+            et4.setText(p.phone);
+
+            EditText et5 = (EditText)findViewById(R.id.email);
+            et5.setText(p.email);
+
+            Button takePhoto = (Button) findViewById(R.id.takePersonPhoto);
+            takePhoto.setText("List Packages");
+
+            //TODO check if person has any packages, to disable button
+            takePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MainActivity.this, ListPackages.class);
+                    i.putExtra(Constants.personID, p.getId());
+                    startActivity(i);
+                }
+            });
+
+        }
 
     }
 

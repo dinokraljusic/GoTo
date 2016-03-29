@@ -73,6 +73,7 @@ public class PaketAdapter extends BaseAdapter {
             if (!p.Heavy) Heavy.setVisibility(View.GONE);
             if (!p.Perishable) Perishable.setVisibility(View.GONE);
 
+
             /*ImageView map = (ImageView)convertView.findViewById(R.id.mapicon);
             if(p.pickupLat!=0){
                 map.setVisibility(View.VISIBLE);
