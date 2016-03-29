@@ -11,4 +11,5 @@
     <string name="photoUpload">Photo</string>
     <string name="deliveryComment">Comment</string>
     <string name="saveDeliver">Save</string>
+    <string name="accessToken">pk.eyJ1IjoiZGlub2JhIiwiYSI6ImNpbWNrc2J0ZDAwMDJ3Y2x1dXZvbjkxNGoifQ.Gx7G5BYxSqX7awbeqNYKKg</string>
 </resources>

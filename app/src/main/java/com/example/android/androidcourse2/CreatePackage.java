@@ -1,9 +1,7 @@
 package com.example.android.androidcourse2;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,12 +9,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,6 +32,9 @@ import java.util.List;
 public class CreatePackage extends AppCompatActivity {
 
     private List<Address> addressList;
+    //Paket p;
+    private double lon, lat;
+    //TODO:change location attributes to double lon, lat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +53,18 @@ public class CreatePackage extends AppCompatActivity {
             spinnerlayout.setVisibility(View.VISIBLE);
             LinearLayout textlayout = (LinearLayout) findViewById(R.id.textlayout);
             textlayout.setVisibility(View.GONE);
+            LinearLayout packageDestinationText = (LinearLayout) findViewById(R.id.packagedestinationlayout);
+            packageDestinationText.setVisibility(View.VISIBLE);
+            LinearLayout packageDestinationButton = (LinearLayout) findViewById(R.id.packagedestinationbuttonlayout);
+            packageDestinationButton.setVisibility(View.GONE);
 
             EditText dest = (EditText) findViewById(R.id.destination);
             dest.setText("");
             //dest.setInputType(InputType.TYPE_CLASS_TEXT);
             dest.setEnabled(true);
-        } else {
+            lat=lon=0;
+        }
+        else {
             Paket p = Paket.findById(Paket.class, paketID);
 
             Button takePhoto = (Button) findViewById(R.id.takePhoto);
@@ -76,6 +79,10 @@ public class CreatePackage extends AppCompatActivity {
             TextView typetext = (TextView) findViewById(R.id.typetext);
             typetext.setText(typespinner.getSelectedItem().toString());
             spinnerlayout.setVisibility(View.GONE);
+            LinearLayout packageDestinationText = (LinearLayout) findViewById(R.id.packagedestinationlayout);
+            packageDestinationText.setVisibility(View.GONE);
+            LinearLayout packageDestinationButton = (LinearLayout) findViewById(R.id.packagedestinationbuttonlayout);
+            packageDestinationButton.setVisibility(View.VISIBLE);
 
             EditText dest = (EditText) findViewById(R.id.destination);
             dest.setText(p.Destination);
@@ -96,6 +103,15 @@ public class CreatePackage extends AppCompatActivity {
             perishable.setChecked(p.Perishable);
             heavy.setChecked(p.Heavy);
             liquid.setChecked(p.Liquid);
+
+            if(p.PickupLocation!=null){
+                lon = p.PickupLocation.getLongitude();
+                lat = p.PickupLocation.getLatitude();
+            }
+            if(p.pickupLon !=0 && p.pickupLat !=0){
+                lon = p.pickupLon;
+                lat = p.pickupLat;
+            }
         }
 
     }
@@ -210,13 +226,15 @@ public class CreatePackage extends AppCompatActivity {
                 exc.printStackTrace();
             }
 
-            if(l1!=null){
-                p.PickupLocation = l1;
-            }
+            p.PickupLocation = l1;
+            p.pickupLon =l1.getLongitude();
+            p.pickupLat =l1.getLatitude();
+
             p.status = Paket.status.PickedUp;
 
-            //Spinner type = (Spinner)findViewById(R.id.typespinner);
-            //p.type = Paket.Type.getSelectedItem().toString();
+            Spinner type = (Spinner) findViewById(R.id.typespinner);
+            p.type = Paket.Type.values()[type.getSelectedItemPosition()];
+
             p.save();
 
         }
@@ -226,5 +244,14 @@ public class CreatePackage extends AppCompatActivity {
         String toastMessage = addressList == null ? "Package created." : "Package created on " + addressString;
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
         return true;
+    }
+
+    public void openMap(View view){
+        Intent i = new Intent(CreatePackage.this, Map.class);
+        i.putExtra("lon", lon);
+        i.putExtra("lat", lat);
+        //i.put
+        startActivity(i);
+        //startActivity(new Intent(this, Map.class));
     }
 }
