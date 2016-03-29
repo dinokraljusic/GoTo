@@ -47,7 +47,7 @@ public class Map extends AppCompatActivity {
                 int paddingRight = 2;
                 mapboxMap.setPadding(paddingLeft, 2, paddingRight, paddingBottom);
                 //mapboxMap.setStyleUrl(Style.LIGHT);//OPTIONAL
-                mapboxMap.setStyleUrl(Style.MAPBOX_STREETS);
+                mapboxMap.setStyleUrl(Style.EMERALD);
 
                 moveToLatLon(Lat, Lon);
             }

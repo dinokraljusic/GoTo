@@ -34,7 +34,6 @@ public class CreatePackage extends AppCompatActivity {
     private List<Address> addressList;
     //Paket p;
     private double lon, lat;
-    //TODO:change location attributes to double lon, lat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,17 +205,23 @@ public class CreatePackage extends AppCompatActivity {
             p.Liquid = liquid.isChecked();
 
             LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Location l1= null;
+            Location l1,l2,l3;
 
             try{
                 Geocoder gc = new Geocoder(this);
                 l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 3);
+                addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 4);
 
-                Location l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                Location l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+               // l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                //l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
-                        + addressList.get(2).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
+                        + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
+                p.PickupLocation = l1;
+                //double s = l2.getLatitude();
+                //String st = String.valueOf(s);
+                //Log.i("LOC", "l1 acc: "+l1.getAccuracy() + " l2 acc: " + l2.getAccuracy()  + " l3 acc: " + l3.getAccuracy());
+                p.pickupLon =l1.getLongitude();
+                p.pickupLat =l1.getLatitude();
 
             }
             catch(SecurityException e){
@@ -225,10 +230,6 @@ public class CreatePackage extends AppCompatActivity {
             catch(Exception exc){
                 exc.printStackTrace();
             }
-
-            p.PickupLocation = l1;
-            p.pickupLon =l1.getLongitude();
-            p.pickupLat =l1.getLatitude();
 
             p.status = Paket.status.PickedUp;
 

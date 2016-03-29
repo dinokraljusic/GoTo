@@ -1,6 +1,7 @@
 package com.example.android.androidcourse2;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class PaketAdapter extends BaseAdapter {
 
             Paket p = list.get(position);
 
-            TextView id = (TextView) convertView.findViewById(R.id.packetID);
+            TextView id = (TextView) convertView.findViewById(R.id.packetID);//
             TextView pickupDate = (TextView) convertView.findViewById(R.id.pickupDate);
             TextView destination = (TextView) convertView.findViewById(R.id.destination);
             ImageView Fragile = (ImageView) convertView.findViewById(R.id.fragile);
@@ -58,6 +59,10 @@ public class PaketAdapter extends BaseAdapter {
             ImageView Heavy = (ImageView) convertView.findViewById(R.id.heavy);
             ImageView Perishable = (ImageView) convertView.findViewById(R.id.perishable);
 
+            /*if (p.Photo!=null && p.Photo!="") {
+                ImageView image = (ImageView)convertView.findViewById(R.id.paketimage);
+                image.setImageURI(Uri.parse(p.Photo));
+            }*/
 
             id.setText(String.valueOf(p.getId()));
             pickupDate.setText(String.format("%tF", p.pickupDate));
@@ -68,6 +73,14 @@ public class PaketAdapter extends BaseAdapter {
             if (!p.Heavy) Heavy.setVisibility(View.GONE);
             if (!p.Perishable) Perishable.setVisibility(View.GONE);
 
+            /*ImageView map = (ImageView)convertView.findViewById(R.id.mapicon);
+            if(p.pickupLat!=0){
+                map.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                map.setVisibility(View.INVISIBLE);
+            }*/
 
             return convertView;
         }
