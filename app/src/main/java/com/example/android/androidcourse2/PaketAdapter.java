@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Formatter;
 import java.util.List;
@@ -73,6 +74,12 @@ public class PaketAdapter extends BaseAdapter {
             if (!p.Heavy) Heavy.setVisibility(View.GONE);
             if (!p.Perishable) Perishable.setVisibility(View.GONE);
 
+            Fragile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Fragile           Broken", Toast.LENGTH_LONG);
+                }
+            });
 
             /*ImageView map = (ImageView)convertView.findViewById(R.id.mapicon);
             if(p.pickupLat!=0){
