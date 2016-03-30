@@ -148,13 +148,13 @@ public class CreatePackage extends AppCompatActivity {
             imageUri = path;
 
             final Bitmap thumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 92, 92);
-            OutputStream stream = null;
+            OutputStream stream = null;//TODO: crashes in emulator, resolve
             try {
                 stream = new FileOutputStream(path+"thumb");
+                thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
             //Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");

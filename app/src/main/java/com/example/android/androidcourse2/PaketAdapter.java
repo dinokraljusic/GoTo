@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +67,8 @@ public class PaketAdapter extends BaseAdapter {
             if (p.Photo!=null && p.Photo!="") {
                 ImageView image = (ImageView)convertView.findViewById(R.id.paketimage);
                 image.setImageURI(Uri.parse(p.Photo+"thumb"));
+                if(image.getImageAlpha() == 0)
+                    image.setImageURI(Uri.parse(p.Photo));//EMULATOR
                 //imageLoader.DisplayImage(p.Photo, image);
             }
 
@@ -86,7 +89,7 @@ public class PaketAdapter extends BaseAdapter {
             });
 
             final double lon = p.pickupLon, lat = p.pickupLat;
-            ImageView map = (ImageView)convertView.findViewById(R.id.mapicon);
+            ImageView map = (ImageView) convertView.findViewById(R.id.mapicon);
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
