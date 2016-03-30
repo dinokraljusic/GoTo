@@ -48,6 +48,9 @@ public class ListPackages extends AppCompatActivity {
         final ListView lv = (ListView)findViewById(R.id.paketilist);
         lv.setAdapter(new PaketAdapter(this, listapaketa));
         final int[] pos = new int[1];
+        //lv.setFooterDividersEnabled(false);
+        //lv.setHeaderDividersEnabled(false);
+        lv.setDividerHeight(0);
 
         /*lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
