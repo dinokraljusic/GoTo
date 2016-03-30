@@ -3,16 +3,26 @@ package com.example.android.androidcourse2;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class ListPackages extends Activity {
+public class ListPackages extends AppCompatActivity {
+    List<Paket> listapaketa;
+    public static ArrayList<Long> checkedIndices;
+
     //TODO http://stackoverflow.com/questions/25500353/android-actionbar-hide-show-when-scrolling-list-view
     //TODO http://developer.android.com/training/appbar/actions.html
     @Override
@@ -21,8 +31,9 @@ public class ListPackages extends Activity {
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);//hides appBar. Activity must be "Activity" w/o "AppCompat"
         setContentView(R.layout.activity_list_packages);
 
-        List<Paket> listapaketa = null;
+        listapaketa = null;
         long personID = getIntent().getLongExtra(Constants.personID,0);
+        checkedIndices = new ArrayList<Long>();
 
         String sPersonID = String.valueOf(personID);
         //String PersonID = Long.toString(personID);
@@ -38,7 +49,7 @@ public class ListPackages extends Activity {
         lv.setAdapter(new PaketAdapter(this, listapaketa));
         final int[] pos = new int[1];
 
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(ListPackages.this, CreatePackage.class);
@@ -46,7 +57,7 @@ public class ListPackages extends Activity {
                 startActivity(i);
                 return false;
             }
-        });
+        });*/
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,6 +79,36 @@ public class ListPackages extends Activity {
                 startActivity(i);
             }
         });*/
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list_packages, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_delete:
+                StringBuffer stringBuffer = new StringBuffer();
+                stringBuffer.append("Selected IDs:");
+                for(Long lng:checkedIndices)
+                {
+                    stringBuffer.append(lng);
+                    stringBuffer.append(", ");
+                }
+                Toast.makeText(ListPackages.this, stringBuffer.toString(), Toast.LENGTH_LONG).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

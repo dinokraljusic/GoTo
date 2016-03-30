@@ -2,10 +2,13 @@ package com.example.android.androidcourse2;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,7 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -84,14 +90,18 @@ public class CreatePackage extends AppCompatActivity {
             LinearLayout packageDestinationText = (LinearLayout) findViewById(R.id.packagedestinationlayout);
             packageDestinationText.setVisibility(View.GONE);
             LinearLayout packageDestinationButton = (LinearLayout) findViewById(R.id.packagedestinationbuttonlayout);
-            packageDestinationButton.setVisibility(View.VISIBLE);
+
+            if(p.pickupLat != 0)
+                packageDestinationButton.setVisibility(View.VISIBLE);
 
             EditText dest = (EditText) findViewById(R.id.destination);
             dest.setText(p.Destination);
             dest.setEnabled(false);
 
             ImageView iv = (ImageView) findViewById(R.id.slika);
-            iv.setImageURI(Uri.parse(p.Photo));
+            if(p.Photo != null && p.Photo.length() > 4)
+                iv.setImageURI(Uri.parse(p.Photo));
+
             CheckBox perishable = (CheckBox) findViewById(R.id.perishable);
             CheckBox fragile = (CheckBox) findViewById(R.id.fragile);
             CheckBox heavy = (CheckBox) findViewById(R.id.heavy);
@@ -137,8 +147,14 @@ public class CreatePackage extends AppCompatActivity {
             iv.setImageURI(Uri.parse(path));
             imageUri = path;
 
-            //Bitmap bmp = BitmapFactory.decodeFile(path);
-            //iv.setImageBitmap(bmp);
+            final Bitmap thumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 92, 92);
+            OutputStream stream = null;
+            try {
+                stream = new FileOutputStream(path+"thumb");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
             //Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");

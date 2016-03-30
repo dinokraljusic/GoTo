@@ -8,9 +8,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.example.android.androidcourse2.PersonList">
+    tools:context="com.example.android.androidcourse2.ListPackages">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="38dp">
@@ -46,17 +46,20 @@
             android:clickable="false"
             android:textSize="17dp"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ListView
-
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/paketilist"
-
+            android:background="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:fastScrollEnabled="true"
+            android:persistentDrawingCache="scrolling"
+            android:scrollingCache="false"
             />
     </LinearLayout>
 
