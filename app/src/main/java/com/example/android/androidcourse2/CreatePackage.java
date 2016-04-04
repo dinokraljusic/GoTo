@@ -202,7 +202,7 @@ public class CreatePackage extends AppCompatActivity {
     public boolean savePackage(View view){
         List<Address> addressList = null;
         String addressString="";
-
+        Location l1=null;
         try{
             Paket p = new Paket();
 
@@ -225,15 +225,17 @@ public class CreatePackage extends AppCompatActivity {
             p.SenderID = Integer.valueOf(1); //TODO change SenderID to Long
 
             LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Location l1,l2,l3;
+
 
             try{
                 Geocoder gc = new Geocoder(this);
                 l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                if(l1==null){
+                    l1=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                if(l1==null) l1=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 4);
 
-               // l2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                //l3 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
                         + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
                 p.PickupLocation = l1;
@@ -256,11 +258,22 @@ public class CreatePackage extends AppCompatActivity {
             Spinner type = (Spinner) findViewById(R.id.typespinner);
             p.type = Paket.Type.values()[type.getSelectedItemPosition()];
 
+
             p.save();
+
 
         }
         catch(Exception e){
             return false;
+        }
+
+        Geocoder gc = new Geocoder(this);
+        try {
+            List<Address> addresslist = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(),3);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
         String toastMessage = addressList == null ? "Package created." : "Package created on " + addressString;
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();

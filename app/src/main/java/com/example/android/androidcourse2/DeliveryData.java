@@ -1,5 +1,6 @@
 package com.example.android.androidcourse2;
 
+import android.location.Location;
 import android.net.Uri;
 
 import com.orm.SugarRecord;
@@ -14,8 +15,6 @@ public class DeliveryData extends SugarRecord{
     Uri Photo;
     String Comment;
     Date deliveryDate;
-    String commentDate;
-    int packageId;
-    int personid;
+    Location deliveryLocation;
     int deliveryId;
 }

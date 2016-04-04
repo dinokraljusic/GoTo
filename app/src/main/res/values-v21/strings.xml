@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="saveDeliver">Save</string>
+    <string name="delivery_date">Delivery Date:</string>
+    <string name="location">Location:</string>
 </resources>

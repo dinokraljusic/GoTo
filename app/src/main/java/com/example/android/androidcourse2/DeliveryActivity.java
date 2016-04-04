@@ -1,6 +1,10 @@
 package com.example.android.androidcourse2;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,16 +20,42 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DeliveryActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
-        TextView commentDate = (TextView)findViewById(R.id.commentDate);
+
+        TextView deliveryDate = (TextView)findViewById(R.id.deliveryDate);
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        commentDate.setText(currentDateTimeString);
+        deliveryDate.setText(deliveryDate.getText()+" "+ currentDateTimeString);
+
+        TextView deliveryLocation = (TextView)findViewById(R.id.deliveryLocation);
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location l1=null;
+
+        try{
+            Geocoder gc = new Geocoder(this);
+            l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if(l1==null){
+                l1=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            if(l1==null) l1=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            List<Address> addressList =gc.getFromLocation(l1.getLatitude(), l1.getLongitude(),3);
+            String addressString= addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
+                    + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
+           deliveryLocation.setText(addressString );
+        }
+        catch(SecurityException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Uri imageUri = null;
@@ -78,12 +108,13 @@ public class DeliveryActivity extends AppCompatActivity {
     }
 
     public void saveComment(View view){
+
         try {
             DeliveryData deliveryData= new DeliveryData();
             deliveryData.Photo=imageUri;
             EditText editText=(EditText)findViewById(R.id.deliveryComment);
             deliveryData.Comment=editText.getText().toString();
-
+deliveryData.save();
         }
         catch (Exception ex){}
     }

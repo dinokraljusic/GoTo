@@ -11,7 +11,8 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.android.Start"
-    tools:showIn="@layout/activity_start">
+    tools:showIn="@layout/activity_start"
+    android:id="@+id/start_Layout">
 
     <Button
         android:layout_width="match_parent"

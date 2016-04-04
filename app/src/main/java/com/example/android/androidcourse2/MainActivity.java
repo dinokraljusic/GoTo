@@ -2,6 +2,7 @@ package com.example.android.androidcourse2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,7 +27,7 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     //main activity
-
+    boolean firstTime ;
     @Override
     protected void onStart() {
         super.onStart();
@@ -77,6 +78,7 @@ public class MainActivity extends Activity {
         //  setSupportActionBar(toolbar);
      //   List<Person> p = Person.listAll(Person.class);
 
+        firstTime = getIntent().getBooleanExtra(Constants.firstTime,false);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +143,21 @@ public class MainActivity extends Activity {
         String etEmail = et5.getText().toString();
 
         Toast.makeText(getBaseContext(), "Saving Personal Info for: "+fullName, Toast.LENGTH_SHORT).show();
+if(firstTime){
+    Toast.makeText(getBaseContext(),"Saving user info in settings", Toast.LENGTH_SHORT).show();
+    SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
+    SharedPreferences.Editor editor=sp.edit();
+    editor.putString("Name",etName);
+    editor.putString("LastName",etLastName);
+    editor.putString("Adress",etAddress);
+    editor.putString("Phone",etPhone);
+    editor.putString("Email",etEmail);
+    editor.putBoolean(Constants.firstTime,false);
+    editor.commit();
 
+}else{
+    Toast.makeText(getBaseContext(),"Saving user info to database", Toast.LENGTH_SHORT).show();
+    //save to Database
         Person p = new Person();
         p.name = etName;
         p.lastname = etLastName;
@@ -149,6 +165,7 @@ public class MainActivity extends Activity {
         p.phone = etPhone;
         p.email = etEmail;
         p.save();
+}
 
     }
 
