@@ -33,7 +33,6 @@
         <activity android:name=".Map" />
         <activity android:name=".DeliveryActivity" />
         <activity android:name=".CreateSender" />
-        <activity android:name=".Delivery" />
         <activity android:name=".Pickup" />
         <activity
             android:name=".PersonList"

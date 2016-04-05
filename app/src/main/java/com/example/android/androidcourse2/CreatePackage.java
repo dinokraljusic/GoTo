@@ -271,7 +271,7 @@ public class CreatePackage extends AppCompatActivity {
         try {
             List<Address> addresslist = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(),3);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }

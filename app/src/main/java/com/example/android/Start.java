@@ -8,14 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.android.androidcourse2.Constants;
-import com.example.android.androidcourse2.CreatePackage;
-import com.example.android.androidcourse2.CreateSender;
-import com.example.android.androidcourse2.Delivery;
 import com.example.android.androidcourse2.DeliveryActivity;
 import com.example.android.androidcourse2.ListPackages;
 import com.example.android.androidcourse2.MainActivity;
@@ -33,11 +27,11 @@ public class Start extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(Constants.goTo,0);
         boolean firstTime = settings.getBoolean("FirstTime", true);
-if(firstTime) {
-    Intent i = new Intent(this, MainActivity.class);
-    i.putExtra(Constants.firstTime, firstTime);
-    startActivity(i);
-}
+        if(firstTime) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra(Constants.firstTime, firstTime);
+            startActivity(i);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

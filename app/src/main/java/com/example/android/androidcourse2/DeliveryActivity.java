@@ -1,6 +1,8 @@
 package com.example.android.androidcourse2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,6 +10,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,22 +27,34 @@ import java.util.List;
 
 public class DeliveryActivity extends AppCompatActivity {
 
-
+    long paketID;
+    Location l1 = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
+        paketID = getIntent().getLongExtra(Constants.paketID,0);
 
-        TextView deliveryDate = (TextView)findViewById(R.id.deliveryDate);
+        TextView deliveryDate = (TextView) findViewById(R.id.deliveryDate);
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        deliveryDate.setText(deliveryDate.getText()+" "+ currentDateTimeString);
+        deliveryDate.setText(deliveryDate.getText() + " " + currentDateTimeString);
 
-        TextView deliveryLocation = (TextView)findViewById(R.id.deliveryLocation);
+        TextView deliveryLocation = (TextView) findViewById(R.id.deliveryLocation);
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location l1=null;
 
-        try{
+
+        try {
             Geocoder gc = new Geocoder(this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
             if(l1==null){
                 l1=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -50,9 +65,7 @@ public class DeliveryActivity extends AppCompatActivity {
                     + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
            deliveryLocation.setText(addressString );
         }
-        catch(SecurityException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        catch(Exception e){
             e.printStackTrace();
         }
 
@@ -110,13 +123,25 @@ public class DeliveryActivity extends AppCompatActivity {
     public void saveComment(View view){
 
         try {
-            DeliveryData deliveryData= new DeliveryData();
-            deliveryData.Photo=imageUri;
-            EditText editText=(EditText)findViewById(R.id.deliveryComment);
-            deliveryData.Comment=editText.getText().toString();
-deliveryData.save();
+//            DeliveryData deliveryData= new DeliveryData();
+//            deliveryData.Photo=imageUri;
+//            EditText editText=(EditText)findViewById(R.id.deliveryComment);
+//            deliveryData.Comment=editText.getText().toString();
+//            deliveryData.save();
+
+            Paket p = Paket.findById(Paket.class, paketID);
+            p.deliveryDate = new Date(); //current time
+//            p.pickupLat = l1.getLatitude();
+//            p.pickupLon = l1.getLongitude();
+            p.ReceiverID = 999;
+           // p.status = Paket.Status.valueOf("");
+            p.save();
+            //TODO send conformation email or SMS to senderID
         }
-        catch (Exception ex){}
+        catch (Exception ex)
+        {
+            Log.e("DELIVERY", ex.getMessage());
+        }
     }
 
 }

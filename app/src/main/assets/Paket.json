@@ -1,0 +1,27 @@
+{
+  "ID": 1,
+  "SenderID": 1,
+  "Photo" : "",
+  "pickupLon": 43.656756,
+  "pickupLat": 18.345345,
+  Location DeliveryLocation;
+  Date pickupDate;
+  Date deliveryDate;
+  int ReceiverID;
+  String Destination;
+  //int Size;
+  float WeightKG;
+  //Type
+  boolean Perishable;
+  boolean Fragile;
+  boolean Heavy;
+  boolean Liquid;
+  boolean Hazardous;
+  boolean AirTransport;
+  String HandlingInstructions;
+  String Comments;
+  enum Status {PickedUp, InTransport, Delivered, Distributed, Destroyed, Lost , Stolen }
+enum Type {Food, Water, Medical, Tools, Shelter, Clothing, Baby,FirstAid }
+Type type;
+static Status status;
+}

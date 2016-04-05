@@ -64,6 +64,7 @@ public class PaketAdapter extends BaseAdapter {
             ImageView Heavy = (ImageView) convertView.findViewById(R.id.heavy);
             ImageView Perishable = (ImageView) convertView.findViewById(R.id.perishable);
 
+
             if (p.Photo!=null && p.Photo!="") {
                 ImageView image = (ImageView)convertView.findViewById(R.id.paketimage);
                 image.setImageURI(Uri.parse(p.Photo+"thumb"));
@@ -113,6 +114,12 @@ public class PaketAdapter extends BaseAdapter {
                 }
             });
 
+            if (p.ReceiverID == 999)
+            {
+                convertView.setBackgroundColor(0x00FF00);
+                convertView.setAlpha(0.5F);
+                check.setVisibility(View.INVISIBLE);
+            }
             if(p.pickupLat!=0){
                 map.setVisibility(View.VISIBLE);
             }

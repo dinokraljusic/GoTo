@@ -106,7 +106,11 @@ public class ListPackages extends AppCompatActivity {
                     stringBuffer.append(lng);
                     stringBuffer.append(", ");
                 }
-                Toast.makeText(ListPackages.this, stringBuffer.toString(), Toast.LENGTH_LONG).show();
+                Intent i = new Intent(ListPackages.this, DeliveryActivity.class);
+                i.putExtra(Constants.paketID, checkedIndices.get(0));
+                startActivity(i);
+
+                //Toast.makeText(ListPackages.this, stringBuffer.toString(), Toast.LENGTH_LONG).show();
                 return true;
 
             default:
