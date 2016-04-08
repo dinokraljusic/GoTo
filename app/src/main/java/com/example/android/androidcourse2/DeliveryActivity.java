@@ -148,7 +148,11 @@ public class DeliveryActivity extends AppCompatActivity {
             i.putExtra(Intent.EXTRA_EMAIL  , new String[]{person.email});
             i.putExtra(Intent.EXTRA_SUBJECT, "GOTO Delivery");
             i.putExtra(Intent.EXTRA_TEXT   , emailBody);
-           // i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(p.));
+            i.setType("application/image");
+
+            Uri uri = Uri.parse("file://" + imageUri.toString());
+            i.putExtra(Intent.EXTRA_STREAM, uri);
+            //startActivity(i);
 
             try {
                 startActivity(i);

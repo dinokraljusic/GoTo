@@ -41,6 +41,7 @@ public class CreatePackage extends AppCompatActivity {
     //Paket p;
     private double lon, lat;
     Long personID;
+    //TODO: runnable and handler
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -143,30 +143,30 @@ public class MainActivity extends Activity {
         String etEmail = et5.getText().toString();
 
         Toast.makeText(getBaseContext(), "Saving Personal Info for: "+fullName, Toast.LENGTH_SHORT).show();
-if(firstTime){
-    Toast.makeText(getBaseContext(),"Saving user info in settings", Toast.LENGTH_SHORT).show();
-    SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
-    SharedPreferences.Editor editor=sp.edit();
-    editor.putString("Name",etName);
-    editor.putString("LastName",etLastName);
-    editor.putString("Adress",etAddress);
-    editor.putString("Phone",etPhone);
-    editor.putString("Email",etEmail);
-    editor.putBoolean(Constants.firstTime,false);
-    editor.commit();
+        if(firstTime) {
+            Toast.makeText(getBaseContext(),"Saving user info in settings", Toast.LENGTH_SHORT).show();
+            SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("Name",etName);
+            editor.putString("LastName",etLastName);
+            editor.putString("Adress",etAddress);
+            editor.putString("Phone",etPhone);
+            editor.putString("Email",etEmail);
+            editor.putBoolean(Constants.firstTime,false);
+            editor.commit();
 
-}else{
-    Toast.makeText(getBaseContext(),"Saving user info to database", Toast.LENGTH_SHORT).show();
-    //save to Database
-        Person p = new Person();
-        p.name = etName;
-        p.lastname = etLastName;
-        p.address = etAddress;
-        p.phone = etPhone;
-        p.email = etEmail;
-        p.save();
-}
-
+        }
+        else{
+            Toast.makeText(getBaseContext(),"Saving user info to database", Toast.LENGTH_SHORT).show();
+            //save to Database
+            Person p = new Person();
+            p.name = etName;
+            p.lastname = etLastName;
+            p.address = etAddress;
+            p.phone = etPhone;
+            p.email = etEmail;
+            p.save();
+        }
     }
 
     @Override
