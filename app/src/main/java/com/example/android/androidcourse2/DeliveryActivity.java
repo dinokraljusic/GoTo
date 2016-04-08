@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,12 +132,29 @@ public class DeliveryActivity extends AppCompatActivity {
 
             Paket p = Paket.findById(Paket.class, paketID);
             p.deliveryDate = new Date(); //current time
-//            p.pickupLat = l1.getLatitude();
-//            p.pickupLon = l1.getLongitude();
+            if (l1 != null) {
+                p.pickupLat = l1.getLatitude();
+                p.pickupLon = l1.getLongitude();
+            }
             p.ReceiverID = 999;
-           // p.status = Paket.Status.valueOf("");
+            p.status = Paket.Status.Delivered.name();
             p.save();
+
+            Person person = Person.findById(Person.class, p.SenderID);
             //TODO send conformation email or SMS to senderID
+            String emailBody = "Paket delivered on " + p.deliveryDate.toString() + " to " + p.ReceiverID + " on location ";
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{person.email});
+            i.putExtra(Intent.EXTRA_SUBJECT, "GOTO Delivery");
+            i.putExtra(Intent.EXTRA_TEXT   , emailBody);
+           // i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(p.));
+
+            try {
+                startActivity(i);
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(DeliveryActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
         }
         catch (Exception ex)
         {

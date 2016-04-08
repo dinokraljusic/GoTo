@@ -13,7 +13,7 @@ public class Person extends SugarRecord {
     String email;
     String address;
     String photoFileName;
-    enum Type {Sender, Receiver, Trnasporter}
+    enum Type {Sender, Receiver, Transporter}
     Type type;
 }
 

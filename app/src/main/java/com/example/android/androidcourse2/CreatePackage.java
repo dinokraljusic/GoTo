@@ -116,10 +116,7 @@ public class CreatePackage extends AppCompatActivity {
             heavy.setChecked(p.Heavy);
             liquid.setChecked(p.Liquid);
 
-            if(p.PickupLocation!=null){
-                lon = p.PickupLocation.getLongitude();
-                lat = p.PickupLocation.getLatitude();
-            }
+
             if(p.pickupLon !=0 && p.pickupLat !=0){
                 lon = p.pickupLon;
                 lat = p.pickupLat;
@@ -238,7 +235,6 @@ public class CreatePackage extends AppCompatActivity {
 
                 addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
                         + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
-                p.PickupLocation = l1;
                 //double s = l2.getLatitude();
                 //String st = String.valueOf(s);
                 //Log.i("LOC", "l1 acc: "+l1.getAccuracy() + " l2 acc: " + l2.getAccuracy()  + " l3 acc: " + l3.getAccuracy());
@@ -253,11 +249,11 @@ public class CreatePackage extends AppCompatActivity {
                 exc.printStackTrace();
             }
 
-            p.status = Paket.status.PickedUp;
+            p.status = Paket.Status.PickedUp.name();
 
             Spinner type = (Spinner) findViewById(R.id.typespinner);
-            p.type = Paket.Type.values()[type.getSelectedItemPosition()];
-
+            Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
+            p.type = t.name();
 
             p.save();
 

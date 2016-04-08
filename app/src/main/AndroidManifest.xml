@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="DATABASE" android:value="sugar_example.db" />
+        <meta-data android:name="DATABASE" android:value="GOTO.db" />
         <meta-data android:name="VERSION" android:value="2" />
 
         <activity android:name=".MainActivity" />
