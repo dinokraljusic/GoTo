@@ -1,11 +1,13 @@
 package com.example.android.androidcourse2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +23,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,10 +170,31 @@ if(firstTime){
         p.phone = etPhone;
         p.email = etEmail;
         p.save();
+        ImageView image = (ImageView)findViewById(R.id.profilePict);
+        String photoFile = "PersonPhoto" + p.getId();
+        saveFile(this, ((BitmapDrawable)image.getDrawable()).getBitmap(),photoFile);
+        p.photoFileName = photoFile;
 }
 
     }
 
+    public static void saveFile(Context context, Bitmap b, String picName){
+        FileOutputStream fos;
+        try {
+            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
+            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        }
+        catch (FileNotFoundException e) {
+            Log.d("GOTO", "file not found");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            Log.d("GOTO", "io exception");
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -206,5 +232,6 @@ if(firstTime){
         Bundle extras = data.getExtras();
         Bitmap imageBitmap = (Bitmap) extras.get("data");
         image.setImageBitmap(imageBitmap);
+
     }
 }
