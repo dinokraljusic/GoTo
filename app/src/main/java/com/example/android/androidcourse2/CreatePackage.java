@@ -255,7 +255,7 @@ public class CreatePackage extends AppCompatActivity {
             Spinner type = (Spinner) findViewById(R.id.typespinner);
             Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
             p.type = t.name();
-
+            p.SenderID = personID;
             p.save();
 
 
