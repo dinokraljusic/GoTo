@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Formatter;
 import java.util.List;
 
 /**
@@ -108,8 +106,11 @@ public class PaketAdapter extends BaseAdapter {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (check.isChecked()) {
                         ListPackages.checkedIndices.add(new Long(p.getId()));
+                        ListPackages.sendMenuItem.setVisible(true);
                     } else {
                         ListPackages.checkedIndices.remove(p.getId());
+                        if(ListPackages.checkedIndices.size() < 1)
+                            ListPackages.sendMenuItem.setVisible(false);
                     }
                 }
             });

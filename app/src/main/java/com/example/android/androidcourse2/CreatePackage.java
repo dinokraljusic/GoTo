@@ -38,9 +38,13 @@ import java.util.List;
 public class CreatePackage extends AppCompatActivity {
 
     private List<Address> addressList;
-    //Paket p;
     private double lon, lat;
     Long personID;
+    public int TAKE_PHOTO_CODE = 100;
+    String FILENAME = "package";
+    File dir = Environment.getExternalStorageDirectory();
+    File newfile;
+    Uri outputFileUri;
     //TODO: runnable and handler
 
     @Override
@@ -48,6 +52,12 @@ public class CreatePackage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_package);
 
+        //If this activity is invoked from person list, it should be passed the paketID parameter.
+        //If it's not, we're setting it to 0. If 0, we make the fields editable and prepare the activity
+        //for entering required data for a new package (line 64 - if). If, however, it's a nonzero value,
+        //we set the activity to display details for the selected Paket (line 80 - if).
+
+        //When creating a new Paket, we pass the personID argument to know who created it
         personID = getIntent().getLongExtra(Constants.personID, 0);
 
         List<Paket> paketi = Paket.listAll(Paket.class);
@@ -56,7 +66,7 @@ public class CreatePackage extends AppCompatActivity {
         sp.setAdapter(new ArrayAdapter<String>(CreatePackage.this, android.R.layout.simple_list_item_1, slist));
         long paketID = this.getIntent().getLongExtra(Constants.paketID, 0);
 
-        //check if getIntent is null
+        //No paketID passed, setting the activity for creation of a new Paket...
         if (paketID == 0) {
             LinearLayout spinnerlayout = (LinearLayout) findViewById(R.id.spinnerlayout);
             spinnerlayout.setVisibility(View.VISIBLE);
@@ -73,7 +83,7 @@ public class CreatePackage extends AppCompatActivity {
             dest.setEnabled(true);
             lat=lon=0;
         }
-        else {
+        else {//paketID passed to this activity, setting it to just show Paket info
             Paket p = Paket.findById(Paket.class, paketID);
 
             Button takePhoto = (Button) findViewById(R.id.takePhoto);
@@ -89,7 +99,10 @@ public class CreatePackage extends AppCompatActivity {
             typetext.setText(typespinner.getSelectedItem().toString());
             spinnerlayout.setVisibility(View.GONE);
             LinearLayout packageDestinationText = (LinearLayout) findViewById(R.id.packagedestinationlayout);
-            packageDestinationText.setVisibility(View.GONE);
+            packageDestinationText.setVisibility(View.VISIBLE);
+            EditText destination = (EditText)findViewById(R.id.destination);
+            destination.setText("Destination: " + p.Destination);
+
             LinearLayout packageDestinationButton = (LinearLayout) findViewById(R.id.packagedestinationbuttonlayout);
 
             if(p.pickupLat != 0)
@@ -126,29 +139,46 @@ public class CreatePackage extends AppCompatActivity {
 
     }
 
-    public String imageUri = null;
-    public int TAKE_PHOTO_CODE = 100;
-    String FILENAME = "package_picture";
-    File dir = Environment.getExternalStorageDirectory();
-    String path;
-    File newfile;
+    //We get a unique number for current time so that every pic has a unique name. We create a file from
+    //that and pass path to that file to cameraActivity. When photo is taken, onActivityResult is invoked
+    public void takePhoto(View view){
 
+        Date current = new Date();
+        FILENAME += String.valueOf(current.getTime());
+        String file = dir + "/" + FILENAME;
+
+        newfile = new File(file);
+        try{
+            newfile.createNewFile();
+        }
+        catch(IOException e){
+            Log.e("ERR", "mewfile creation failed");
+        }
+
+        outputFileUri = Uri.fromFile(newfile);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        //cameraIntent.setDisplayOrientation(90);
+        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+    }
+
+    //We create two files; one is the image, the other is the thumbnail used to display in ListaPaketa.
+    //Every Paket image has a corresponding thumbnail
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        path = dir.toString() + "/" +FILENAME;
-
-        if(requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK){
+        if(requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
 
             ImageView iv = (ImageView)findViewById(R.id.slika);
-            iv.setImageURI(Uri.parse(path));
-            imageUri = path;
+            iv.setImageURI(outputFileUri);
 
-            final Bitmap thumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 92, 92);
+            final Bitmap thumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(outputFileUri.toString()), 92, 92);
             OutputStream stream = null;//TODO: crashes in emulator, resolve
             try {
-                stream = new FileOutputStream(path+"thumb");
+                stream = new FileOutputStream(outputFileUri.toString()+"thumb");
                 thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -161,29 +191,6 @@ public class CreatePackage extends AppCompatActivity {
         }
     }
 
-
-    public void takePhoto(View view){
-
-        Date current = new Date();
-        FILENAME += Math.random()*1000;
-        String file = dir + "/" + FILENAME;
-
-        newfile = new File(file);
-        try{
-            newfile.createNewFile();
-        }
-        catch(IOException e){
-            Log.d("a", "b");
-        }
-
-        Uri outputFileUri = Uri.fromFile(newfile);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        //cameraIntent.setDisplayOrientation(90);
-        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-    }
 
     @Override
     protected void onResume() {
@@ -198,13 +205,12 @@ public class CreatePackage extends AppCompatActivity {
     }
 
     public boolean savePackage(View view){
-        List<Address> addressList = null;
         String addressString="";
         Location l1=null;
-        try{
+        try {
             Paket p = new Paket();
 
-            p.Photo = imageUri;
+            p.Photo = outputFileUri.toString();
            // p.DeliveryLocation
             Calendar cal = Calendar.getInstance();
             p.pickupDate = cal.getTime();
@@ -221,27 +227,41 @@ public class CreatePackage extends AppCompatActivity {
             p.Heavy = heavy.isChecked();
             p.Liquid = liquid.isChecked();
             p.SenderID = Integer.valueOf(1); //TODO change SenderID to Long
+            p.status = Paket.Status.PickedUp.name();
+
+            Spinner type = (Spinner) findViewById(R.id.typespinner);
+            Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
+            p.type = t.name();
+            p.SenderID = personID;
 
             LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-
-            try{
-                Geocoder gc = new Geocoder(this);
+            try {
                 l1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                if(l1==null){
+
+                if(l1==null)
+                {
                     l1=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
-                if(l1==null) l1=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 4);
+                if(l1==null)
+                    l1=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                addressString = addressList.get(0).getAddressLine(0) +", "+ addressList.get(1).getAddressLine(0) +", "
-                        + addressList.get(3).getAddressLine(0) + ", " + addressList.get(0).getCountryName();
-                //double s = l2.getLatitude();
-                //String st = String.valueOf(s);
-                //Log.i("LOC", "l1 acc: "+l1.getAccuracy() + " l2 acc: " + l2.getAccuracy()  + " l3 acc: " + l3.getAccuracy());
-                p.pickupLon =l1.getLongitude();
-                p.pickupLat =l1.getLatitude();
+                try {
+                    Geocoder gc = new Geocoder(this);
+                    addressList = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(), 4);
 
+                    addressString = addressList.get(0).getAddressLine(0) +", "
+                            + addressList.get(1).getAddressLine(0) +", "
+                            + addressList.get(3).getAddressLine(0) + ", "
+                            + addressList.get(0).getCountryName();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("ERR", "Geocoder failed");
+                }
+
+                p.pickupLon = l1.getLongitude();
+                p.pickupLat = l1.getLatitude();
             }
             catch(SecurityException e){
                 e.printStackTrace();
@@ -250,28 +270,13 @@ public class CreatePackage extends AppCompatActivity {
                 exc.printStackTrace();
             }
 
-            p.status = Paket.Status.PickedUp.name();
-
-            Spinner type = (Spinner) findViewById(R.id.typespinner);
-            Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
-            p.type = t.name();
-            p.SenderID = personID;
             p.save();
-
 
         }
         catch(Exception e){
             return false;
         }
 
-        Geocoder gc = new Geocoder(this);
-        try {
-            List<Address> addresslist = gc.getFromLocation(l1.getLatitude(), l1.getLongitude(),3);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
         String toastMessage = addressList == null ? "Package created." : "Package created on " + addressString;
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
         return true;
