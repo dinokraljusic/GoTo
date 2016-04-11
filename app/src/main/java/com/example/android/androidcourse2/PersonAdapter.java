@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,13 +18,13 @@ public class PersonAdapter extends BaseAdapter {
     Context context = null;
 
     PersonAdapter(Context c, List<Person> l)
-
     {
         context = c;
         list = l;
     }
     @Override
     public int getCount() {
+        if (list == null) return 0;
         return list.size();
     }
 
@@ -57,7 +56,7 @@ public class PersonAdapter extends BaseAdapter {
         TextView address = (TextView) convertView.findViewById(R.id.address);
         // id.setText(p.ID);
         name.setText(p.name);
-        lastname.setText(p.lastname);
+        lastname.setText(p.lastName);
         //phone.setText(p.phone);
         email.setText(p.email);
         address.setText(p.address);

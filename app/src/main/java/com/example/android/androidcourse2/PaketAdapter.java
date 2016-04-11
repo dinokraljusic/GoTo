@@ -106,11 +106,11 @@ public class PaketAdapter extends BaseAdapter {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (check.isChecked()) {
                         ListPackages.checkedIndices.add(new Long(p.getId()));
-                        ListPackages.sendMenuItem.setVisible(true);
+                        // ListPackages.sendMenuItem.setVisible(true);
                     } else {
                         ListPackages.checkedIndices.remove(p.getId());
-                        if(ListPackages.checkedIndices.size() < 1)
-                            ListPackages.sendMenuItem.setVisible(false);
+                        //if(ListPackages.checkedIndices.size() < 1)
+                            // ListPackages.sendMenuItem.setVisible(false);
                     }
                 }
             });

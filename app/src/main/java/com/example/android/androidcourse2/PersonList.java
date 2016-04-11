@@ -1,5 +1,6 @@
 package com.example.android.androidcourse2;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,60 +29,31 @@ import java.util.List;
 public class PersonList extends AppCompatActivity {
 
     ListView listView;
-    ProgressDialog pd;
+    private class AsyncTaskRunner extends AsyncTask<String, Void, List<Person> > {
 
-    private class AsyncTaskRunner extends AsyncTask<String, List<Person>, List<Person> > {
+        ProgressDialog pd;
+        Activity a;
+
+        public AsyncTaskRunner(Activity a)
+        {
+            this.a = a;
+            pd = new ProgressDialog(a);
+        }
 
         @Override
         protected List<Person> doInBackground(String... params) {
 
             String sss = params[0];
             HttpURLConnection con = null;
-//            try {
+            try {
 
-                /****
-                URL urlPost = new URL("http://gotodelivery.azurewebsites.net/api/people/add");
-
-                con = (HttpURLConnection) urlPost.openConnection();
-                con.setDoOutput(true);
-                con.setDoInput(true);
-                con.setRequestProperty("Content-Type", "application/json");
-                con.setRequestProperty("Accept", "application/json");
-                con.setRequestMethod("POST");
-
-                JSONObject o = new JSONObject();
-                o.put("name", "Simon");
-                o.put("lastName", "Cowel");
-                o.put("phone", "065465456");
-                o.put("address", "Sunset boulevard 32");
-                o.put("personTypeId", 2);
-
-                OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-                wr.write(o.toString());
-                ****/
-                //display what returns the POST request
-
-//                StringBuilder sb = new StringBuilder();
-//                int HttpResult = con.getResponseCode();
-//                if (HttpResult == HttpURLConnection.HTTP_OK) {
-//                    BufferedReader br = new BufferedReader(
-//                            new InputStreamReader(con.getInputStream(), "utf-8"));
-//                    String line = null;
-//                    while ((line = br.readLine()) != null) {
-//                        sb.append(line + "\n");
-//                    }
-//                    br.close();
-//                    System.out.println("" + sb.toString());
-//                } else {
-//                    System.out.println(con.getResponseMessage());
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//            finally {
-//                if (con != null) con.disconnect();
-//            }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            finally {
+                if (con != null) con.disconnect();
+            }
 
 
             try {
@@ -124,14 +97,32 @@ public class PersonList extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pd.setMessage( "Wait while we get people...");
+            pd.show();
         }
 
         @Override
         protected void onPostExecute(List<Person> pl) {
             super.onPostExecute(pl);
+            final List<Person> plist = pl;
+            final Gson g = new Gson();
             pd.cancel();
             listView.setAdapter(new PersonAdapter(getBaseContext(), pl));
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(PersonList.this, MainActivity.class);
+                    Person p = plist.get(position);
+                    i.putExtra(Constants.person, g.toJson(p));
+                    startActivity(i);
+                }
+            });
             //Toast.makeText(PersonList.this, pl.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
         }
     }
 
@@ -158,21 +149,21 @@ public class PersonList extends AppCompatActivity {
             boolean getPersonsFromWebService = true;
 
            if (true) {
-               AsyncTaskRunner astr = new AsyncTaskRunner();
-               pd = ProgressDialog.show(this, "Loading", "Wait while we get people...");
+               AsyncTaskRunner astr = new AsyncTaskRunner(this);
                astr.execute(" "); //pass in url for web service
            }
             else {
                listView.setAdapter(new PersonAdapter(this, Person.listAll(Person.class)));
+               listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                   @Override
+                   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                       Intent i = new Intent(PersonList.this, MainActivity.class);
+                       i.putExtra(Constants.personID, id);
+                       startActivity(i);
+                   }
+               });
            }
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent i = new Intent(PersonList.this, MainActivity.class);
-                    i.putExtra(Constants.personID, id);
-                    startActivity(i);
-                }
-            });
+
         }
     }
 }

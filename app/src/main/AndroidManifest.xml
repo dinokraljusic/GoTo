@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
-
     <application
         android:name="com.orm.SugarApp"
         android:allowBackup="true"
@@ -26,28 +24,32 @@
 
         <activity android:name=".MainActivity" />
         <activity android:name=".PersonalInfoActivity" />
-        <activity android:name=".CreatePackage" android:label="Package Details">
-
+        <activity
+            android:name=".PersonList"
+            android:label="@string/title_activity_person_list"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".CreatePackage"
+                  android:label="Package Details">
         </activity>
         <activity android:name=".ListPackages" />
         <activity android:name=".Map" />
         <activity android:name=".DeliveryActivity" />
         <activity android:name=".CreateSender" />
-        <activity android:name=".Pickup" />
+        <activity android:name=".Pickup">
+
+        </activity>
+
         <activity
-            android:name=".PersonList"
-            android:label="@string/title_activity_person_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.example.android.Start"
+            android:name=".Start"
             android:label="@string/title_activity_start"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
     </application>
 

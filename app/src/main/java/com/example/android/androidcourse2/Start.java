@@ -1,4 +1,4 @@
-package com.example.android;
+package com.example.android.androidcourse2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +50,7 @@ public class Start extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /**
         SharedPreferences settings = getSharedPreferences(Constants.goTo,0);
         boolean firstTime = settings.getBoolean("FirstTime", true);
         if(firstTime) {
@@ -57,7 +58,7 @@ public class Start extends AppCompatActivity {
             i.putExtra(Constants.firstTime, firstTime);
             startActivity(i);
         }
-
+        ***/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +70,7 @@ public class Start extends AppCompatActivity {
     }
 
     public void createPerson(View v){
+
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -83,9 +85,11 @@ public class Start extends AppCompatActivity {
     }
 
     public void listPackage(View v){
+
         startActivity(new Intent(this, ListPackages.class));
     }
 
-    public void deliver(View v) { startActivity(new Intent(this, DeliveryActivity.class));}
+    public void deliver(View v) {
+        startActivity(new Intent(this, DeliveryActivity.class));}
 
     }

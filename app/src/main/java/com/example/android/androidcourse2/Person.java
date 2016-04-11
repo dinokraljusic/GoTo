@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
 public class Person extends SugarRecord {
     int ID;
     String name;
-    String lastname;
+    String lastName;
     String phone;
     String email;
     String address;
