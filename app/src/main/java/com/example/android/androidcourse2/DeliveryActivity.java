@@ -10,6 +10,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,11 +32,41 @@ public class DeliveryActivity extends AppCompatActivity {
 
     long paketID;
     Location l1 = null;
+    Paket p = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
         paketID = getIntent().getLongExtra(Constants.paketID,0);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Person person = Person.findById(Person.class, p.senderId);
+                //TODO send conformation email or SMS to senderID
+                String emailBody = "Paket delivered on " + p.deliveryDate.toString() + " to " + p.receiverId + " on location ";
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{person.email});
+                i.putExtra(Intent.EXTRA_SUBJECT, "GOTO Delivery");
+                i.putExtra(Intent.EXTRA_TEXT   , emailBody);
+                i.setType("application/image");
+
+                Uri uri = Uri.parse("file://" + imageUri.toString());
+                i.putExtra(Intent.EXTRA_STREAM, uri);
+                //startActivity(i);
+
+                try {
+                    startActivity(i);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Snackbar.make(view, "No email clients installed.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+            }
+        });
 
         TextView deliveryDate = (TextView) findViewById(R.id.deliveryDate);
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
@@ -93,7 +125,6 @@ public class DeliveryActivity extends AppCompatActivity {
 
             //Bitmap bmp = BitmapFactory.decodeFile(path);
             //iv.setImageBitmap(bmp);
-
             //Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");
             //iv.setImageBitmap(imageBitmap);
@@ -111,7 +142,7 @@ public class DeliveryActivity extends AppCompatActivity {
             newfile.createNewFile();
         }
         catch(IOException e){
-            Log.d("a", "b");
+            Log.e("DELIVERY", e.getMessage());
         }
 
         Uri outputFileUri = Uri.fromFile(newfile);
@@ -124,41 +155,15 @@ public class DeliveryActivity extends AppCompatActivity {
     public void saveComment(View view){
 
         try {
-//            DeliveryData deliveryData= new DeliveryData();
-//            deliveryData.Photo=imageUri;
-//            EditText editText=(EditText)findViewById(R.id.deliveryComment);
-//            deliveryData.Comment=editText.getText().toString();
-//            deliveryData.save();
-
-            Paket p = Paket.findById(Paket.class, paketID);
+            p = Paket.findById(Paket.class, paketID);
             p.deliveryDate = new Date(); //current time
             if (l1 != null) {
                 p.pickupLat = l1.getLatitude();
                 p.pickupLon = l1.getLongitude();
             }
-            p.ReceiverID = 999;
-            p.status = Paket.Status.Delivered.name();
+            p.receiverId = 999;
+            p.packetStatusId = Paket.Status.Delivered.ordinal() + 1;
             p.save();
-
-            Person person = Person.findById(Person.class, p.SenderID);
-            //TODO send conformation email or SMS to senderID
-            String emailBody = "Paket delivered on " + p.deliveryDate.toString() + " to " + p.ReceiverID + " on location ";
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{person.email});
-            i.putExtra(Intent.EXTRA_SUBJECT, "GOTO Delivery");
-            i.putExtra(Intent.EXTRA_TEXT   , emailBody);
-            i.setType("application/image");
-
-            Uri uri = Uri.parse("file://" + imageUri.toString());
-            i.putExtra(Intent.EXTRA_STREAM, uri);
-            //startActivity(i);
-
-            try {
-                startActivity(i);
-            } catch (android.content.ActivityNotFoundException ex) {
-                Toast.makeText(DeliveryActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-            }
         }
         catch (Exception ex)
         {

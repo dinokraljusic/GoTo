@@ -16,20 +16,18 @@ public class Paket extends SugarRecord {
     }*/
     static enum Status {PickedUp, InTransport, Delivered, Distributed, Destroyed, Lost , Stolen }
     static enum Type {Food, Water, Medical, Tools, Shelter, Clothing, Baby,FirstAid }
-    int ID; //unique id
-    long SenderID;
-    long ReceiverID;
-    long TranspoterID;
+    transient int ID; //unique id
+    long senderId;
+    long receiverId;
+    long transpoterId;
     String Photo;
     double pickupLon;
     double pickupLat;
     Date pickupDate;
     Date deliveryDate;
     String Destination;
-    //int Size;
 
     float WeightKG;
-    //Type
     boolean Perishable;
     boolean Fragile;
     boolean Heavy;
@@ -39,6 +37,6 @@ public class Paket extends SugarRecord {
     String HandlingInstructions;
     String Comments;
 
-    String type;
-    String status;
+    int packetTypeId;
+    int packetStatusId;
 }

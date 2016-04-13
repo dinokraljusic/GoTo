@@ -101,12 +101,24 @@ public class MainActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //create ProgresBar.show()
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            //ProgressBar.cancel()
+            SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("ID",s);
+            editor.commit();
+
             Toast.makeText(getBaseContext(), "User register with ID " + s,Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
         }
     }
 
@@ -291,6 +303,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            pd.cancel();
             SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
             SharedPreferences.Editor editor=sp.edit();
             editor.putString("ID",s);
@@ -317,35 +330,7 @@ public class MainActivity extends Activity {
         EditText et5 = (EditText)findViewById(R.id.email);
         String etEmail = et5.getText().toString();
 
-        Toast.makeText(getBaseContext(), "Saving Personal Info for: "+fullName, Toast.LENGTH_SHORT).show();
-if(firstTime){
-    Toast.makeText(getBaseContext(),"Saving user info in settings", Toast.LENGTH_SHORT).show();
 
-    SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
-    SharedPreferences.Editor editor=sp.edit();
-    editor.putString("name",etName);
-    editor.putString("lastName",etLastName);
-    editor.putString("adress",etAddress);
-    editor.putString("phone",etPhone);
-    editor.putString("email",etEmail);
-
-    editor.commit();
-    JSONObject jo = new JSONObject();
-    try {
-        jo.put("name",etName);
-        jo.put("lastName",etLastName);
-        jo.put("adress",etAddress);
-        jo.put("phone",etPhone);
-        jo.put("email",etEmail);
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-
-    AsyncTaskRunner atr = new AsyncTaskRunner(this);
-    atr.execute(jo);
-
-
-}else{
     Toast.makeText(getBaseContext(),"Saving user info to database", Toast.LENGTH_SHORT).show();
     //save to Database
         Person p = new Person();
@@ -363,7 +348,21 @@ if(firstTime){
 
         AsyncRunner ar = new AsyncRunner();
         ar.execute(p);
-}
+
+        if(firstTime){
+            Toast.makeText(getBaseContext(),"Saving user info in settings", Toast.LENGTH_SHORT).show();
+            SharedPreferences sp = getSharedPreferences(Constants.goTo, 0);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("name",etName);
+            editor.putString("lastName",etLastName);
+            editor.putString("adress",etAddress);
+            editor.putString("phone",etPhone);
+            editor.putString("email",etEmail);
+
+            editor.commit();
+
+        }
+
 
     }
 

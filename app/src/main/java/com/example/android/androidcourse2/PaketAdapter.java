@@ -115,7 +115,8 @@ public class PaketAdapter extends BaseAdapter {
                 }
             });
 
-            if (p.status.equals(Paket.Status.Delivered.name()))
+            //if (p.packetStatusId.equals(Paket.Status.Delivered.name()))
+            if (p.packetStatusId == Paket.Status.Delivered.ordinal() + 1)
             {
                 convertView.setBackgroundColor(0x00FF00);
                 convertView.setAlpha(0.5F);

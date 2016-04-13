@@ -1,6 +1,7 @@
 package com.example.android.androidcourse2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -26,17 +28,83 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class CreatePackage extends AppCompatActivity {
 
+    private class AsyncRunner extends AsyncTask<Paket, Void, String> {
+
+        @Override
+        protected String doInBackground(Paket... params) {
+            Paket p = params[0];
+
+            try {
+                URL url = new URL("http://gotodelivery.azurewebsites.net/api/packets/add");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.addRequestProperty("Content-Type","application/json");
+                OutputStream os = con.getOutputStream();
+                Gson g = new Gson();
+//                String jj = "{\n" +
+//                        "    \"senderId\" : 1,\n" +
+//                        "    \"receiverId\": 2,\n" +
+//                        "    \"transporterId\": 3,\n" +
+//                        "    \"packetStatusId\": 2,\n" +
+//                        "    \"packetTypeId\": 7,\n" +
+//                        "    \"destination\": \"Livno\"\n" +
+//                        "}";
+//                os.write(jj.getBytes("utf-8"));
+                JSONObject jo = new JSONObject(g.toJson(p));
+                jo.remove("id");
+
+                os.write(jo.toString().getBytes());
+                os.flush();
+                Log.d("WEB_LOG", jo.toString());
+                int code = con.getResponseCode();
+
+                if (code == HttpURLConnection.HTTP_CREATED) {
+                    InputStreamReader isr = new InputStreamReader(con.getInputStream());
+
+                    StringBuilder sb1 = new StringBuilder();
+                    int data = isr.read();
+                    while (data != -1) {
+                        sb1.append((char) data);
+                        data = isr.read();
+                    }
+                    return sb1.toString(); //TODO read stream
+                }
+                else {
+                    Log.d("WEB_LOG", "Error HTTP Code " + code );
+                    return "Error";
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Toast.makeText(getBaseContext(), "Paket registered " + s, Toast.LENGTH_LONG).show();
+        }
+    }
     private List<Address> addressList;
     private double lon, lat;
     Long personID;
@@ -210,7 +278,7 @@ public class CreatePackage extends AppCompatActivity {
         try {
             Paket p = new Paket();
 
-            p.Photo = outputFileUri.toString();
+            if (outputFileUri != null) p.Photo = outputFileUri.toString();
            // p.DeliveryLocation
             Calendar cal = Calendar.getInstance();
             p.pickupDate = cal.getTime();
@@ -226,13 +294,17 @@ public class CreatePackage extends AppCompatActivity {
             p.Perishable = perishable.isChecked();
             p.Heavy = heavy.isChecked();
             p.Liquid = liquid.isChecked();
-            p.SenderID = Integer.valueOf(1); //TODO change SenderID to Long
-            p.status = Paket.Status.PickedUp.name();
-
+            p.senderId = Integer.valueOf(1); //TODO change SenderID to Long
+            p.packetStatusId = Paket.Status.PickedUp.ordinal() + 1;
+            p.transpoterId = 3; //TODO add real transporter
+            p.receiverId = 2;
+//            SharedPreferences settings = getSharedPreferences("ID",0);
+//            p.transpoterId = settings.getLong(Constants.personID,0L);
+//
             Spinner type = (Spinner) findViewById(R.id.typespinner);
-            Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
-            p.type = t.name();
-            p.SenderID = personID;
+           // Paket.Type t = Paket.Type.values()[type.getSelectedItemPosition()];
+            p.packetTypeId = type.getSelectedItemPosition() + 1;
+            p.senderId = personID;
 
             LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -264,14 +336,17 @@ public class CreatePackage extends AppCompatActivity {
                 p.pickupLat = l1.getLatitude();
             }
             catch(SecurityException e){
+                Log.e("CreatePackage", e.toString());
                 e.printStackTrace();
             }
             catch(Exception exc){
+                Log.e("CreatePackage", exc.toString());
                 exc.printStackTrace();
             }
 
             p.save();
-
+            AsyncRunner ar = new AsyncRunner();
+            ar.execute(p);
         }
         catch(Exception e){
             return false;
