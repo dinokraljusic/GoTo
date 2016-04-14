@@ -97,6 +97,7 @@ public class ListPackages extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_settings:
+                //TODO add edit settings activity
                 return true;
 
             case R.id.action_send:

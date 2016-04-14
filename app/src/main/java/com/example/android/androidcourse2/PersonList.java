@@ -3,11 +3,16 @@ package com.example.android.androidcourse2;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class PersonList extends AppCompatActivity {
 
@@ -134,6 +140,19 @@ public class PersonList extends AppCompatActivity {
        boolean FromCreatePackageButton = getIntent().getBooleanExtra(Constants.FromCreatePackageButton,false);
 
         if (FromCreatePackageButton){
+            Button btn = new Button(this);
+            btn.setText("Crete Sender");
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0,1);
+            LinearLayout contentView = (LinearLayout) findViewById(R.id.layoutPersonList);
+            contentView.addView(btn,0, params);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    startActivity(new Intent(PersonList.this, CreatePackage.class));
+                }
+            });
+
             listView.setAdapter(new PersonAdapter(this, Person.listAll(Person.class)));
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

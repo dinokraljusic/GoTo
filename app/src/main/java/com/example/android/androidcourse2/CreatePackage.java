@@ -27,11 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -75,6 +72,7 @@ public class CreatePackage extends AppCompatActivity {
                 os.write(jo.toString().getBytes());
                 os.flush();
                 Log.d("WEB_LOG", jo.toString());
+
                 int code = con.getResponseCode();
 
                 if (code == HttpURLConnection.HTTP_CREATED) {
