@@ -1,71 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="76dp" >
 
     <TextView
 
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:layout_marginEnd="7dp"
         android:layout_height="match_parent"
         android:id="@+id/personID"
-
+        android:text="ID"
         />
 
-    <TextView
-
-        android:layout_weight="1"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/name"
+        android:layout_weight="8"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1.6"
+            android:orientation="horizontal"
+            android:layout_height="0dp">
+            <TextView
+
+                android:layout_marginEnd="7dp"
+                android:layout_height="match_parent"
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:text="Named"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_height="match_parent"
+                android:id="@+id/lastname"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:text="Last Name"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="7dp"
+            android:layout_height="0dp"
+            android:id="@+id/phone"
+            android:text="123 456 789 123"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="7dp"
+            android:layout_height="0dp"
+            android:id="@+id/email"
+            android:text="emailemailprovider.com"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="7dp"
+            android:layout_height="0dp"
+            android:id="@+id/address"
+            android:text="Adresa, Adresa 598, Adresa"/>
+    </LinearLayout>
+
 
     <TextView
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/lastname"
 
-        />
-
-    <TextView
-
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/phone"
-
-
-        />
-
-    <TextView
-
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/email"
-
-
-        />
-
-    <TextView
-
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/address"
-
-
-        />
-
-    <TextView
-
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/photofilename"
-
+        android:text="PhotoFileNAme"
         />
 
 </LinearLayout>
